@@ -3,7 +3,7 @@ package application_test
 import (
 	"testing"
 
-	"github.com/josemoura212/FullCycle/application"
+	"github.com/josemoura212/FullCycle/arqui-hexagonal/application"
 	uuid "github.com/satori/go.uuid"
 	"github.com/stretchr/testify/require"
 )

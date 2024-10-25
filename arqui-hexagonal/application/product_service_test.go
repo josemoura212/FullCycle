@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	gomock "github.com/golang/mock/gomock"
-	"github.com/josemoura212/FullCycle/application"
-	mock_application "github.com/josemoura212/FullCycle/application/mocks"
+	"github.com/josemoura212/FullCycle/arqui-hexagonal/application"
+	mock_application "github.com/josemoura212/FullCycle/arqui-hexagonal/application/mocks"
 	"github.com/stretchr/testify/require"
 )
 
