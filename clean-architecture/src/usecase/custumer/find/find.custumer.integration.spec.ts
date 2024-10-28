@@ -49,7 +49,7 @@ describe("Test find custumer use case", () => {
       },
     };
 
-    const result = usecase.execute(input);
+    const result = await usecase.execute(input);
 
     expect(result).toEqual(output);
   });
