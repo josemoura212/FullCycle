@@ -1,4 +1,3 @@
-import { number } from "yup";
 import { app, sequelize } from "../express";
 import request from "supertest";
 
@@ -70,7 +69,6 @@ describe("E2E test for customer", () => {
     expect(response2.status).toBe(200);
 
     const listResponse = await request(app).get("/customer").send();
-    console.log(listResponse.body);
     expect(listResponse.status).toBe(200);
 
     expect(listResponse.body.customers.length).toBe(2);
