@@ -21,7 +21,7 @@ export default class ProductRepository implements ProductGateway {
     });
 
     if (!result) {
-      return null;
+      throw new Error(`product with id ${id} not found`);
     }
 
     return new Product({
