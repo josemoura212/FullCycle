@@ -58,14 +58,14 @@ describe("StoreCatalogFacade teste", () => {
 
     const result = await facade.findAll();
 
-    expect(result.length).toBe(2);
-    expect(result[0].id).toBe("1");
-    expect(result[0].name).toBe("Product 1");
-    expect(result[0].description).toBe("Product 1 description");
-    expect(result[0].salesPrice).toBe(100);
-    expect(result[1].id).toBe("2");
-    expect(result[1].name).toBe("Product 2");
-    expect(result[1].description).toBe("Product 2 description");
-    expect(result[1].salesPrice).toBe(200);
+    expect(result.products.length).toBe(2);
+    expect(result.products[0].id).toBe("1");
+    expect(result.products[0].name).toBe("Product 1");
+    expect(result.products[0].description).toBe("Product 1 description");
+    expect(result.products[0].salesPrice).toBe(100);
+    expect(result.products[1].id).toBe("2");
+    expect(result.products[1].name).toBe("Product 2");
+    expect(result.products[1].description).toBe("Product 2 description");
+    expect(result.products[1].salesPrice).toBe(200);
   });
 });
