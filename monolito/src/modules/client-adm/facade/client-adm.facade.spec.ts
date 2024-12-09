@@ -5,7 +5,7 @@ import AddClientUsecase from "../usecase/add-client/add-client.usecase";
 import Client from "../domain/client.entity";
 import ClientAdmFacade from "./client-adm.facade";
 import FindClientUsecase from "../usecase/find-client/find-client.usecase";
-import ClientAdmFacadadeFactory from "../factory/facade.factory";
+import ClientAdmFacadadeFactory from "../factory/client-adm.facade.factory";
 
 describe("ClientAdmFacade test", () => {
   let sequelize: Sequelize;
