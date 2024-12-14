@@ -8,8 +8,6 @@ export default class PaymentFacadeFactory {
     const processPaymentUseCase = new ProcessPaymentUseCase(
       transactionRepository
     );
-    const paymentFacade = new PaymentFacade(processPaymentUseCase);
-
-    return paymentFacade;
+    return new PaymentFacade(processPaymentUseCase);
   }
 }
