@@ -2,14 +2,14 @@ import AggregateRoot from "../../@shared/domain/entity/aggregate-root.interface"
 import BaseEntity from "../../@shared/domain/entity/base.entity";
 import Address from "../../@shared/domain/value-object/address.value-object";
 import Id from "../../@shared/domain/value-object/id.value-object";
-import InvoceItem from "./invoce-item";
+import InvoiceItem from "./invoce-item";
 
 type InvoceProps = {
   id?: Id;
   name: string;
   document: string;
   address: Address;
-  items: InvoceItem[];
+  items: InvoiceItem[];
   createdAt?: Date;
   updatedAt?: Date;
 };
@@ -18,7 +18,7 @@ export default class Invoce extends BaseEntity implements AggregateRoot {
   private _name: string;
   private _document: string;
   private _address: Address;
-  private _items: InvoceItem[];
+  private _items: InvoiceItem[];
 
   constructor(props: InvoceProps) {
     super(props.id, props.createdAt, props.updatedAt);
@@ -40,7 +40,7 @@ export default class Invoce extends BaseEntity implements AggregateRoot {
     return this._address;
   }
 
-  get items(): InvoceItem[] {
+  get items(): InvoiceItem[] {
     return this._items;
   }
 

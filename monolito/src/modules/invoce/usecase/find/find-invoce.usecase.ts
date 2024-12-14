@@ -1,14 +1,14 @@
 import Id from "../../../@shared/domain/value-object/id.value-object";
 import UseCaseInterface from "../../../@shared/usecase/use-case.interface";
 import Invoce from "../../domain/invoce";
-import InvoceGateway from "../../gateway/invoce.gateway";
+import InvoiceGateray from "../../gateway/invoce.gateway";
 import {
   FindInvoiceUseCaseInputDTO,
   FindInvoiceUseCaseOutputDTO,
 } from "./find-invoce.dto";
 
 export default class FindInvoiceUseCase implements UseCaseInterface {
-  constructor(private invoiceRepository: InvoceGateway) {}
+  constructor(private invoiceRepository: InvoiceGateray) {}
   async execute(
     input: FindInvoiceUseCaseInputDTO
   ): Promise<FindInvoiceUseCaseOutputDTO> {

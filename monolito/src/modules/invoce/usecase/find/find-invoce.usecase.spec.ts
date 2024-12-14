@@ -2,7 +2,7 @@ import e from "express";
 import Address from "../../../@shared/domain/value-object/address.value-object";
 import Id from "../../../@shared/domain/value-object/id.value-object";
 import Invoce from "../../domain/invoce";
-import InvoceItem from "../../domain/invoce-item";
+import InvoiceItem from "../../domain/invoce-item";
 import FindInvoiceUseCase from "./find-invoce.usecase";
 
 const invoce = new Invoce({
@@ -18,7 +18,7 @@ const invoce = new Invoce({
     zipCode: "12345678",
   }),
   items: [
-    new InvoceItem({
+    new InvoiceItem({
       id: new Id("1"),
       name: "Item Teste",
       price: 123.45,
@@ -30,7 +30,7 @@ const invoce = new Invoce({
 const MockRepository = () => {
   return {
     find: jest.fn().mockResolvedValue(Promise.resolve(invoce)),
-    geneare: jest.fn(),
+    generate: jest.fn(),
   };
 };
 
