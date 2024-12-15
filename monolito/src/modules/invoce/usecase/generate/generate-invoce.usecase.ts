@@ -1,7 +1,7 @@
 import Address from "../../../@shared/domain/value-object/address.value-object";
 import Id from "../../../@shared/domain/value-object/id.value-object";
 import UseCaseInterface from "../../../@shared/usecase/use-case.interface";
-import Invoce from "../../domain/invoce";
+import Invoice from "../../domain/invoce";
 import InvoiceItem from "../../domain/invoce-item";
 import InvoiceGateray from "../../gateway/invoce.gateway";
 import {
@@ -15,7 +15,7 @@ export default class GenerateInvoiceUseCase implements UseCaseInterface {
   async execute(
     input: GenerateInvoiceUseCaseInputDto
   ): Promise<GenerateInvoiceUseCaseOutputDto> {
-    const invoice = new Invoce({
+    const invoice = new Invoice({
       name: input.name,
       document: input.document,
       address: new Address({

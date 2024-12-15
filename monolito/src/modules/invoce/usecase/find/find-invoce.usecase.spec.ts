@@ -1,11 +1,11 @@
 import e from "express";
 import Address from "../../../@shared/domain/value-object/address.value-object";
 import Id from "../../../@shared/domain/value-object/id.value-object";
-import Invoce from "../../domain/invoce";
+import Invoice from "../../domain/invoce";
 import InvoiceItem from "../../domain/invoce-item";
 import FindInvoiceUseCase from "./find-invoce.usecase";
 
-const invoce = new Invoce({
+const invoce = new Invoice({
   id: new Id("1"),
   name: "Test",
   document: "123456789",

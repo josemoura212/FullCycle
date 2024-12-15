@@ -14,7 +14,7 @@ type InvoceProps = {
   updatedAt?: Date;
 };
 
-export default class Invoce extends BaseEntity implements AggregateRoot {
+export default class Invoice extends BaseEntity implements AggregateRoot {
   private _name: string;
   private _document: string;
   private _address: Address;

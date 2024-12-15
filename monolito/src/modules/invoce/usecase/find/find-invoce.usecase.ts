@@ -1,6 +1,6 @@
 import Id from "../../../@shared/domain/value-object/id.value-object";
 import UseCaseInterface from "../../../@shared/usecase/use-case.interface";
-import Invoce from "../../domain/invoce";
+import Invoice from "../../domain/invoce";
 import InvoiceGateray from "../../gateway/invoce.gateway";
 import {
   FindInvoiceUseCaseInputDTO,
