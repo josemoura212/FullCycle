@@ -1,20 +1,21 @@
 import { Column, Model, PrimaryKey, Table } from "sequelize-typescript";
 
 @Table({
-  tableName: "client_order",
-  timestamps: false,
+    tableName: 'client_order',
+    timestamps: false,
 })
-export default class ClientOrder extends Model {
-  @PrimaryKey
-  @Column({ allowNull: false })
-  declare id: string;
+export default class ClientOrder extends Model{
 
-  @Column({ allowNull: false })
-  declare name: string;
-
-  @Column({ allowNull: false })
-  declare email: string;
-
-  @Column({ allowNull: false })
-  declare address: string;
+    @PrimaryKey
+    @Column({allowNull: false})
+    declare id: string;
+    
+    @Column({allowNull: false})
+    declare name: string;
+    
+    @Column({allowNull: false})
+    declare email: string;
+    
+    @Column({allowNull: false})
+    declare document: string;
 }

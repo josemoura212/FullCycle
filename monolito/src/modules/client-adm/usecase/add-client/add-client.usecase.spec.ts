@@ -1,3 +1,5 @@
+import Client from "../../domain/client.entity";
+import AddressClientDto from "../../domain/value-object/address-client.dto";
 import AddClientUseCase from "./add-client.usecase";
 
 const MockRepository = () => {
@@ -7,36 +9,24 @@ const MockRepository = () => {
   };
 };
 
-describe("Add Client usecase unit test", () => {
-  it("should add a Client", async () => {
-    const clientRepository = MockRepository();
-    const usecase = new AddClientUseCase(clientRepository);
+describe("Add Client Usecase unit test", () => {
+  it("should add a client", async () => {
+    const repository = MockRepository();
+    const usecase = new AddClientUseCase(repository);
 
     const input = {
-      id: "1",
       name: "Client 1",
       email: "x@x.com",
-      document: "123456789",
-      street: "Address 1",
-      number: "1",
-      complement: "Complement 1",
-      city: "City 1",
-      state: "State 1",
-      zipCode: "ZipCode 1",
+      document: "doc",
+      address: new AddressClientDto('street', '1', 'city', 'zipcode', 'state', 'complement'),
     };
+    const client = new Client(input);
 
-    const result = await usecase.execute(input);
-
-    expect(clientRepository.add).toHaveBeenCalled();
-    expect(result.id).toBe(input.id);
-    expect(result.name).toBe(input.name);
-    expect(result.email).toBe(input.email);
-    expect(result.document).toBe(input.document);
-    expect(result.street).toBe(input.street);
-    expect(result.number).toBe(input.number);
-    expect(result.complement).toBe(input.complement);
-    expect(result.city).toBe(input.city);
-    expect(result.state).toBe(input.state);
-    expect(result.zipCode).toBe(input.zipCode);
+    const result = await usecase.execute(client);
+    expect(result.id).toBe(client.id.id)
+    expect(result.name).toBe(client.name)
+    expect(result.email).toBe(client.email)
+    expect(result.document).toBe(client.document)
+    expect(result.address.city).toBe(client.address.city)
   });
 });

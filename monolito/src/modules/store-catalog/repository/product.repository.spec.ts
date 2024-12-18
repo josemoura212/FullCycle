@@ -1,6 +1,8 @@
 import { Sequelize } from "sequelize-typescript";
 import ProductModel from "./product.model";
-import ProductRepository from "./produsct.repository";
+import ProductRepository from "./product.repository";
+import Id from "../../@shared/domain/value-object/id.value-object";
+import Product from "../domain/product.entity";
 
 describe("ProductRepository test", () => {
   let sequelize: Sequelize;
@@ -13,27 +15,27 @@ describe("ProductRepository test", () => {
       sync: { force: true },
     });
 
-    sequelize.addModels([ProductModel]);
+    await sequelize.addModels([ProductModel]);
     await sequelize.sync();
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
     await sequelize.close();
   });
 
-  it("should find all product", async () => {
+  it("should find all products", async () => {
     await ProductModel.create({
       id: "1",
       name: "Product 1",
-      description: "Product 1 description",
-      salesPrice: 100,
+      description: "Description 1",
+      purchasePrice: 100,
     });
 
     await ProductModel.create({
       id: "2",
       name: "Product 2",
-      description: "Product 2 description",
-      salesPrice: 200,
+      description: "Description 2",
+      purchasePrice: 200,
     });
 
     const productRepository = new ProductRepository();
@@ -42,12 +44,11 @@ describe("ProductRepository test", () => {
     expect(products.length).toBe(2);
     expect(products[0].id.id).toBe("1");
     expect(products[0].name).toBe("Product 1");
-    expect(products[0].description).toBe("Product 1 description");
+    expect(products[0].description).toBe("Description 1");
     expect(products[0].salesPrice).toBe(100);
-
     expect(products[1].id.id).toBe("2");
     expect(products[1].name).toBe("Product 2");
-    expect(products[1].description).toBe("Product 2 description");
+    expect(products[1].description).toBe("Description 2");
     expect(products[1].salesPrice).toBe(200);
   });
 
@@ -55,8 +56,8 @@ describe("ProductRepository test", () => {
     await ProductModel.create({
       id: "1",
       name: "Product 1",
-      description: "Product 1 description",
-      salesPrice: 100,
+      description: "Description 1",
+      purchasePrice: 100,
     });
 
     const productRepository = new ProductRepository();
@@ -64,7 +65,7 @@ describe("ProductRepository test", () => {
 
     expect(product.id.id).toBe("1");
     expect(product.name).toBe("Product 1");
-    expect(product.description).toBe("Product 1 description");
+    expect(product.description).toBe("Description 1");
     expect(product.salesPrice).toBe(100);
   });
 });

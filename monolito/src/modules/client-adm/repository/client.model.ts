@@ -1,10 +1,11 @@
 import { Column, Model, PrimaryKey, Table } from "sequelize-typescript";
+import AddressClientDto from "../domain/value-object/address-client.dto";
 
 @Table({
-  tableName: "client",
+  tableName: "clients",
   timestamps: false,
 })
-export class ClientModel extends Model {
+export default class ClientModel extends Model {
   @PrimaryKey
   @Column({ allowNull: false })
   id: string;
@@ -15,26 +16,26 @@ export class ClientModel extends Model {
   @Column({ allowNull: false })
   email: string;
 
-  @Column({ allowNull: false })
-  document: string;
+  @Column({allowNull: false})
+  declare document: string;
+  
+  @Column({allowNull: false})
+  declare street: string;
 
-  @Column({ allowNull: false })
-  street: string;
+  @Column({allowNull: false})
+  declare number: string;
+  
+  @Column({allowNull: false})
+  declare city: string;
 
-  @Column({ allowNull: false })
-  number: string;
+  @Column({allowNull: false})
+  declare zipCode: string;
 
-  @Column({ allowNull: true })
-  complement: string;
+  @Column({allowNull: false})
+  declare state: string;
 
-  @Column({ allowNull: false })
-  city: string;
-
-  @Column({ allowNull: false })
-  state: string;
-
-  @Column({ allowNull: false })
-  zipcode: string;
+  @Column({allowNull: false})
+  declare complement: string
 
   @Column({ allowNull: false })
   createdAt: Date;

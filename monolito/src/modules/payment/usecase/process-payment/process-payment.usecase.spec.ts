@@ -4,34 +4,34 @@ import ProcessPaymentUseCase from "./process-payment.usecase";
 
 const transaction = new Transaction({
   id: new Id("1"),
-  orderId: "1",
   amount: 100,
+  orderId: "1",
   status: "approved",
 });
 
 const MockRepository = () => {
   return {
-    save: jest.fn().mockResolvedValue(Promise.resolve(transaction)),
+    save: jest.fn().mockReturnValue(Promise.resolve(transaction)),
   };
 };
+
 const transaction2 = new Transaction({
   id: new Id("1"),
-  orderId: "1",
   amount: 50,
+  orderId: "1",
   status: "declined",
 });
 
 const MockRepositoryDeclined = () => {
   return {
-    save: jest.fn().mockResolvedValue(Promise.resolve(transaction2)),
+    save: jest.fn().mockReturnValue(Promise.resolve(transaction2)),
   };
 };
 
-describe("ProcessPaymentUseCase unit test", () => {
-  it("Should approve a transaction", async () => {
-    const paymetnRepository = MockRepository();
-    const usecase = new ProcessPaymentUseCase(paymetnRepository);
-
+describe("Process payment usecase unit test", () => {
+  it("should approve a transaction", async () => {
+    const paymentRepository = MockRepository();
+    const usecase = new ProcessPaymentUseCase(paymentRepository);
     const input = {
       orderId: "1",
       amount: 100,
@@ -40,18 +40,17 @@ describe("ProcessPaymentUseCase unit test", () => {
     const result = await usecase.execute(input);
 
     expect(result.transactionId).toBe(transaction.id.id);
-    expect(paymetnRepository.save).toHaveBeenCalled();
+    expect(paymentRepository.save).toHaveBeenCalled();
     expect(result.status).toBe("approved");
     expect(result.amount).toBe(100);
     expect(result.orderId).toBe("1");
-    expect(result.createdAt).toEqual(transaction.createdAt);
-    expect(result.updatedAt).toEqual(transaction.updatedAt);
+    expect(result.createdAt).toBe(transaction.createdAt);
+    expect(result.updatedAt).toBe(transaction.updatedAt);
   });
 
-  it("Should decline a transaction", async () => {
-    const paymetnRepository = MockRepositoryDeclined();
-    const usecase = new ProcessPaymentUseCase(paymetnRepository);
-
+  it("should decline a transaction", async () => {
+    const paymentRepository = MockRepositoryDeclined();
+    const usecase = new ProcessPaymentUseCase(paymentRepository);
     const input = {
       orderId: "1",
       amount: 50,
@@ -60,11 +59,11 @@ describe("ProcessPaymentUseCase unit test", () => {
     const result = await usecase.execute(input);
 
     expect(result.transactionId).toBe(transaction2.id.id);
-    expect(paymetnRepository.save).toHaveBeenCalled();
+    expect(paymentRepository.save).toHaveBeenCalled();
     expect(result.status).toBe("declined");
     expect(result.amount).toBe(50);
     expect(result.orderId).toBe("1");
-    expect(result.createdAt).toEqual(transaction2.createdAt);
-    expect(result.updatedAt).toEqual(transaction2.updatedAt);
+    expect(result.createdAt).toBe(transaction2.createdAt);
+    expect(result.updatedAt).toBe(transaction2.updatedAt);
   });
 });

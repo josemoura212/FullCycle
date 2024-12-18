@@ -1,30 +1,23 @@
-import {
-  Table,
-  Model,
-  PrimaryKey,
-  Column,
-  HasMany,
-  ForeignKey,
-  BelongsTo,
-} from "sequelize-typescript";
+import {Table, Model, PrimaryKey, Column, HasMany, ForeignKey, BelongsTo } from "sequelize-typescript";
 import ClientOrder from "./client.order.model";
 import ProductOrder from "./product.order.model";
 
 @Table({
-  tableName: "order",
-  timestamps: false,
+    tableName: 'order',
+    timestamps: false
 })
-export default class OrderModel extends Model {
-  @PrimaryKey
-  @Column({ allowNull: false })
-  declare id: string;
+export default class OrderModel extends Model{
 
-  @ForeignKey(() => ClientOrder)
-  declare client_id: string;
+    @PrimaryKey
+    @Column({allowNull: false})
+    declare id: string;
 
-  @BelongsTo(() => ClientOrder)
-  declare client: ClientOrder;
+    @ForeignKey(() => ClientOrder)
+    declare client_id: string;
 
-  @HasMany(() => ProductOrder, { onUpdate: "CASCADE" })
-  declare products?: ProductOrder[];
+    @BelongsTo(() => ClientOrder)
+    declare client: ClientOrder;
+
+    @HasMany(() => ProductOrder, {onUpdate: 'CASCADE'})
+    declare products?: ProductOrder[];
 }

@@ -1,4 +1,3 @@
-import Address from "../../../@shared/domain/value-object/address.value-object";
 import Id from "../../../@shared/domain/value-object/id.value-object";
 import Client from "../../domain/client.entity";
 import ClientGateway from "../../gateway/client.gateway";
@@ -10,24 +9,17 @@ import {
 export default class AddClientUseCase {
   private _clientRepository: ClientGateway;
 
-  constructor(_ClientRepository: ClientGateway) {
-    this._clientRepository = _ClientRepository;
+  constructor(clientRepository: ClientGateway) {
+    this._clientRepository = clientRepository;
   }
 
   async execute(input: AddClientInputDto): Promise<AddClientOutputDto> {
     const props = {
-      id: new Id(input.id),
+      id: new Id(input.id.id),
       name: input.name,
       email: input.email,
       document: input.document,
-      address: new Address({
-        street: input.street,
-        number: input.number,
-        complement: input.complement,
-        city: input.city,
-        state: input.state,
-        zipCode: input.zipCode,
-      }),
+      address: input.address,
     };
 
     const client = new Client(props);
@@ -38,12 +30,7 @@ export default class AddClientUseCase {
       name: client.name,
       email: client.email,
       document: client.document,
-      street: client.address.street,
-      number: client.address.number,
-      complement: client.address.complement,
-      city: client.address.city,
-      state: client.address.state,
-      zipCode: client.address.zipCode,
+      address: client.address,
       createdAt: client.createdAt,
       updatedAt: client.updatedAt,
     };

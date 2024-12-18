@@ -1,10 +1,8 @@
 import { Sequelize } from "sequelize-typescript";
+import PaymentFacadeFactory from "../factory/payment.facade.factory";
 import TransactionModel from "../repository/transaction.model";
-import TransactionRepository from "../repository/transaction.repository";
-import ProcessPaymentUseCase from "../usecase/process-payment/process-payment.usecase";
-import PaymentFacadeFactory from "../factory/facade.factory";
 
-describe("payment facade unit test", () => {
+describe("PaymentFacade test", () => {
   let sequelize: Sequelize;
 
   beforeEach(async () => {
@@ -15,15 +13,19 @@ describe("payment facade unit test", () => {
       sync: { force: true },
     });
 
-    sequelize.addModels([TransactionModel]);
+    await sequelize.addModels([TransactionModel]);
     await sequelize.sync();
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
     await sequelize.close();
   });
 
   it("should create a transaction", async () => {
+    // const repository = new TransactionRepostiory();
+    // const usecase = new ProcessPaymentUseCase(repository);
+    // const facade = new PaymentFacade(usecase);
+
     const facade = PaymentFacadeFactory.create();
 
     const input = {
