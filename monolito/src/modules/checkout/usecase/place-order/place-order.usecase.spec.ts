@@ -1,10 +1,7 @@
-import { CreatedAt, UpdatedAt } from "sequelize-typescript";
 import Id from "../../../@shared/domain/value-object/id.value-object";
 import Product from "../../domain/product.entity";
 import { PlaceOrderInputDto } from "./place-order.dto";
 import PlaceOrderUseCase from "./plcae-order.usecase";
-import e from "express";
-import { or } from "sequelize";
 
 const mockDate = new Date(2000, 1, 1);
 describe("PlaceOrderUsecase unit test", () => {
@@ -201,7 +198,7 @@ describe("PlaceOrderUsecase unit test", () => {
     };
 
     const mockInvoiceFacade = {
-      generate: jest.fn().mockRejectedValue({ id: "1i" }),
+      generate: jest.fn().mockResolvedValue({ id: "1i" }),
     };
 
     const placeOrderUseCase = new PlaceOrderUseCase(
@@ -243,7 +240,7 @@ describe("PlaceOrderUsecase unit test", () => {
       });
 
     it("Should not be approved", async () => {
-      mockPaymentFacade.process.mockResolvedValue({
+      mockPaymentFacade.process = mockPaymentFacade.process.mockReturnValue({
         transactionId: "1t",
         orderId: "1o",
         amount: 100,
@@ -281,7 +278,7 @@ describe("PlaceOrderUsecase unit test", () => {
     });
 
     it("Should be approved", async () => {
-      mockPaymentFacade.process = mockPaymentFacade.process.mockResolvedValue({
+      mockPaymentFacade.process = mockPaymentFacade.process.mockReturnValue({
         transactionId: "1t",
         orderId: "1o",
         amount: 100,

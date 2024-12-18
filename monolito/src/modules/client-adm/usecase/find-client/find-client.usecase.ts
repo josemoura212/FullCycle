@@ -1,37 +1,26 @@
-import Address from "../../../@shared/domain/value-object/address.value-object";
 import ClientGateway from "../../gateway/client.gateway";
 import {
-  FindClientUseCaseInputDto,
-  FindClientUseCaseOutputDto,
+  FindClientInputDto,
+  FindClientOutputDto,
 } from "./find-client.usecase.dto";
 
 export default class FindClientUseCase {
-  private _clientRepository: ClientGateway;
+  constructor(private readonly repository: ClientGateway) {}
 
-  constructor(clientRepository: ClientGateway) {
-    this._clientRepository = clientRepository;
-  }
-
-  async execute(
-    input: FindClientUseCaseInputDto
-  ): Promise<FindClientUseCaseOutputDto> {
-    const result = await this._clientRepository.find(input.id);
+  async execute(input: FindClientInputDto): Promise<FindClientOutputDto> {
+    const client = await this.repository.find(input.id);
 
     return {
-      id: result.id.id,
-      name: result.name,
-      email: result.email,
-      document: result.document,
-      address: new Address({
-        street: result.address.street,
-        number: result.address.number,
-        complement: result.address.complement,
-        city: result.address.city,
-        state: result.address.state,
-        zipCode: result.address.zipCode,
-      }),
-      createdAt: result.createdAt,
-      updatedAt: result.updatedAt,
+      id: client.id.id,
+      name: client.name,
+      email: client.email,
+      document: client.document,
+      street: client.address.street,
+      number: client.address.number,
+      complement: client.address.complement,
+      city: client.address.city,
+      state: client.address.state,
+      zipCode: client.address.zipCode,
     };
   }
 }
