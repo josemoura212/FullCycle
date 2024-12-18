@@ -1,3 +1,5 @@
+import Id from "../../../@shared/domain/value-object/id.value-object";
+import Product from "../../domain/product.entity";
 import { PlaceOrderInputDto } from "./place-order.dto";
 import PlaceOrderUseCase from "./plcae-order.usecase";
 
@@ -86,6 +88,31 @@ describe("PlaceOrderUsecase unit test", () => {
       await expect(placeOrderUseCase["getProduct"]("0")).rejects.toThrow(
         new Error("Product not found")
       );
+    });
+
+    it("Should return a product when found", async () => {
+      const mockCatalogFacade = {
+        find: jest.fn().mockResolvedValue({
+          id: "1",
+          name: "product",
+          description: "product",
+          salesPrice: 100,
+        }),
+      };
+
+      //@ts-expect-error - force set catalogFacade
+      placeOrderUseCase["_catalogFacade"] = mockCatalogFacade;
+
+      await expect(placeOrderUseCase["getProduct"]("1")).resolves.toEqual(
+        new Product({
+          id: new Id("1"),
+          name: "product",
+          description: "product",
+          salesPrice: 100,
+        })
+      );
+
+      expect(mockCatalogFacade.find).toHaveBeenCalledTimes(1);
     });
   });
   describe("execute method", () => {
