@@ -323,14 +323,14 @@ describe("PlaceOrderUsecase unit test", () => {
         zipCode: clientProps.zipCode,
         items: [
           {
-            id: "1",
-            name: "product",
-            price: 40,
+            id: products["1"].id.id,
+            name: products["1"].name,
+            price: products["1"].salesPrice,
           },
           {
-            id: "2",
-            name: "product 2",
-            price: 30,
+            id: products["2"].id.id,
+            name: products["2"].name,
+            price: products["2"].salesPrice,
           },
         ],
       });
