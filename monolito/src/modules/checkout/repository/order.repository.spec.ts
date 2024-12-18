@@ -15,10 +15,10 @@ describe("order test unit", () => {
     const address = new Address({
       street: "street",
       number: "12",
-      city: "city",
-      zipCode: "zipcode",
-      state: "state",
       complement: "complent",
+      city: "city",
+      state: "state",
+      zipCode: "zipcode",
     });
 
     const client = new Client({
@@ -28,15 +28,15 @@ describe("order test unit", () => {
       email: "email",
     });
     const product = new Product({
-      description: "description1",
       id: new Id("p1"),
       name: "product1",
+      description: "description1",
       salesPrice: 13,
     });
     const product1 = new Product({
-      description: "description2",
       id: new Id("p2"),
       name: "product2",
+      description: "description2",
       salesPrice: 13,
     });
     const products = [product, product1];
@@ -98,5 +98,5 @@ describe("order test unit", () => {
     await orderRepository.addOrder(order);
     const result = await orderRepository.findOrder("1");
     validateResult(result);
-  }, 50000);
+  });
 });
