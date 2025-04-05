@@ -8,11 +8,12 @@ import (
 )
 
 type Client struct {
-	ID        string    `json:"id"`
-	Name      string    `json:"name"`
-	Email     string    `json:"email"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID        string     `json:"id"`
+	Name      string     `json:"name"`
+	Email     string     `json:"email"`
+	Accounts  []*Account `json:"accounts"`
+	CreatedAt time.Time  `json:"created_at"`
+	UpdatedAt time.Time  `json:"updated_at"`
 }
 
 func NewClient(name string, email string) (*Client, error) {
@@ -39,5 +40,29 @@ func (c *Client) Validate() error {
 	if c.Email == "" {
 		return errors.New("email is required")
 	}
+	return nil
+}
+
+func (c *Client) Update(name string, email string) error {
+	c.Name = name
+	c.Email = email
+	c.UpdatedAt = time.Now()
+	err := c.Validate()
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (c *Client) AddAccount(account *Account) error {
+	if account.Client.ID != c.ID {
+		return errors.New("account does not belong to client")
+	}
+
+	c.Accounts = append(c.Accounts, account)
+	c.UpdatedAt = time.Now()
+
 	return nil
 }
