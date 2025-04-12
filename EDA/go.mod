@@ -1,8 +1,14 @@
-module github.com/josemoura212/FullCycle
+module github.com/josemoura212/FullCycle/EDA
 
-go 1.21.6
+go 1.23.0
 
-require github.com/stretchr/testify v1.10.0
+toolchain go1.23.8
+
+require (
+	github.com/google/uuid v1.6.0
+	github.com/mattn/go-sqlite3 v2.0.3+incompatible
+	github.com/stretchr/testify v1.10.0
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
