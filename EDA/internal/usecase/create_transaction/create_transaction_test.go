@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/josemoura212/FullCycle/EDA/internal/entity"
-	event "github.com/josemoura212/FullCycle/EDA/internal/event/handler"
+	"github.com/josemoura212/FullCycle/EDA/internal/event"
 	"github.com/josemoura212/FullCycle/EDA/internal/usecase/mocks"
 	"github.com/josemoura212/FullCycle/EDA/pkg/events"
 	"github.com/stretchr/testify/assert"
@@ -32,10 +32,10 @@ func TestCreateTransactionUseCase_Execute(t *testing.T) {
 
 	dispatcher := events.NewEventDispatcher()
 	eventTransaction := event.NewTransactionCreated()
-	// eventBalance := event.NewBalanceUpdated()
+	eventBalance := event.NewBalanceUpdated()
 	ctx := context.Background()
 
-	uc := NewCreateTransactionUseCase(mockUow, dispatcher, eventTransaction)
+	uc := NewCreateTransactionUseCase(mockUow, dispatcher, eventTransaction, eventBalance)
 	output, err := uc.Execute(ctx, inputDto)
 	assert.Nil(t, err)
 	assert.NotNil(t, output)
