@@ -8,28 +8,28 @@ import (
 )
 
 type Transaction struct {
-	ID          string    `json:"id"`
-	AccountFrom *Account  `json:"account_from"`
-	AccountTo   *Account  `json:"account_to"`
-	Amount      float64   `json:"amount"`
-	CreatedAt   time.Time `json:"created_at"`
+	ID            string
+	AccountFrom   *Account `gorm:"foreignKey:AccountFromID"`
+	AccountFromID string
+	AccountTo     *Account `gorm:"foreignKey:AccountToID"`
+	AccountToID   string
+	Amount        float64
+	CreatedAt     time.Time
 }
 
 func NewTransaction(accountFrom *Account, accountTo *Account, amount float64) (*Transaction, error) {
 	transaction := &Transaction{
-		ID:          uuid.NewString(),
+		ID:          uuid.New().String(),
 		AccountFrom: accountFrom,
 		AccountTo:   accountTo,
 		Amount:      amount,
 		CreatedAt:   time.Now(),
 	}
-
-	if err := transaction.Validate(); err != nil {
+	err := transaction.Validate()
+	if err != nil {
 		return nil, err
 	}
-
 	transaction.Commit()
-
 	return transaction, nil
 }
 

@@ -7,11 +7,12 @@ import (
 )
 
 type Account struct {
-	ID         string    `json:"id"`
-	Client     *Client   `json:"client"`
-	Balance    float64   `json:"balance"`
-	CreatedAt  time.Time `json:"created_at"`
-	UpadatedAt time.Time `json:"updated_at"`
+	ID        string
+	Client    *Client
+	ClientID  string
+	Balance   float64
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 func NewAccount(client *Client) *Account {
@@ -19,24 +20,21 @@ func NewAccount(client *Client) *Account {
 		return nil
 	}
 	account := &Account{
-		ID:         uuid.New().String(),
-		Client:     client,
-		Balance:    0,
-		CreatedAt:  time.Now(),
-		UpadatedAt: time.Now(),
+		ID:        uuid.New().String(),
+		Client:    client,
+		Balance:   0,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
-
 	return account
 }
 
 func (a *Account) Credit(amount float64) {
-
 	a.Balance += amount
-	a.UpadatedAt = time.Now()
+	a.UpdatedAt = time.Now()
 }
 
 func (a *Account) Debit(amount float64) {
-
 	a.Balance -= amount
-	a.UpadatedAt = time.Now()
+	a.UpdatedAt = time.Now()
 }
