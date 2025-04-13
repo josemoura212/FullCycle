@@ -1,8 +1,9 @@
-package createtransaction
+package create_transaction
 
 import (
 	"github.com/josemoura212/FullCycle/EDA/internal/entity"
 	"github.com/josemoura212/FullCycle/EDA/internal/gateway"
+	"github.com/josemoura212/FullCycle/EDA/pkg/events"
 )
 
 type CreateTransactionInputDTO struct {
@@ -18,12 +19,16 @@ type CreateTransactionOutputDTO struct {
 type CreateTransactionUseCase struct {
 	TransactionGateway gateway.TransactionGateway
 	AccountGateway     gateway.AccountGateway
+	eventDispatcher    events.EventDispatcherInterface
+	transactionCreated events.EventInterface
 }
 
-func NewCreateTransactionUseCase(t gateway.TransactionGateway, a gateway.AccountGateway) *CreateTransactionUseCase {
+func NewCreateTransactionUseCase(t gateway.TransactionGateway, a gateway.AccountGateway, e events.EventDispatcherInterface, transactionCreated events.EventInterface) *CreateTransactionUseCase {
 	return &CreateTransactionUseCase{
 		TransactionGateway: t,
 		AccountGateway:     a,
+		eventDispatcher:    e,
+		transactionCreated: transactionCreated,
 	}
 }
 
@@ -48,7 +53,12 @@ func (uc *CreateTransactionUseCase) Execute(input CreateTransactionInputDTO) (*C
 		return nil, err
 	}
 
-	return &CreateTransactionOutputDTO{
+	output := &CreateTransactionOutputDTO{
 		ID: transaction.ID,
-	}, nil
+	}
+
+	uc.transactionCreated.SetPayload(output)
+	uc.eventDispatcher.Dispatch(uc.transactionCreated)
+
+	return output, nil
 }

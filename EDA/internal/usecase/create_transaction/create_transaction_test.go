@@ -1,9 +1,11 @@
-package createtransaction
+package create_transaction
 
 import (
 	"testing"
 
 	"github.com/josemoura212/FullCycle/EDA/internal/entity"
+	"github.com/josemoura212/FullCycle/EDA/internal/event"
+	"github.com/josemoura212/FullCycle/EDA/pkg/events"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -53,7 +55,10 @@ func TestCreateTransactionUseCase_Execut(t *testing.T) {
 		Amount:        100,
 	}
 
-	uc := NewCreateTransactionUseCase(mockTransaction, mockAccount)
+	dispatcher := events.NewEventDispatcher()
+	transactionEvent := event.NewTransactionCreated()
+
+	uc := NewCreateTransactionUseCase(mockTransaction, mockAccount, dispatcher, transactionEvent)
 	output, err := uc.Execute(inputDto)
 	assert.Nil(t, err)
 	assert.NotNil(t, output)
