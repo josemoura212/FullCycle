@@ -1,18 +1,20 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/josemoura212/FullCycle/EDA/internal/database"
-	"github.com/josemoura212/FullCycle/EDA/internal/event"
+	event "github.com/josemoura212/FullCycle/EDA/internal/event/handler"
 	"github.com/josemoura212/FullCycle/EDA/internal/usecase/create_account"
 	"github.com/josemoura212/FullCycle/EDA/internal/usecase/create_client"
 	"github.com/josemoura212/FullCycle/EDA/internal/usecase/create_transaction"
 	"github.com/josemoura212/FullCycle/EDA/internal/web"
 	"github.com/josemoura212/FullCycle/EDA/internal/web/webserver"
 	"github.com/josemoura212/FullCycle/EDA/pkg/events"
+	"github.com/josemoura212/FullCycle/EDA/pkg/uow"
 )
 
 func main() {
@@ -30,11 +32,21 @@ func main() {
 
 	clientDB := database.NewClientDB(db)
 	accountDB := database.NewAccountDB(db)
-	transactionDB := database.NewTransactionDB(db)
+
+	ctx := context.Background()
+	uow := uow.NewUow(ctx, db)
+
+	uow.Register("AccountDB", func(tx *sql.Tx) interface{} {
+		return database.NewAccountDB(db)
+	})
+
+	uow.Register("TransactionDB", func(tx *sql.Tx) interface{} {
+		return database.NewTransactionDB(db)
+	})
 
 	createClientUseCase := create_client.NewCreateClientUseCase(clientDB)
 	createAccountUseCase := create_account.NewCreateAccountUseCase(accountDB, clientDB)
-	createTransactionUseCase := create_transaction.NewCreateTransactionUseCase(transactionDB, accountDB, eventDispatcher, transactionCreatedEvent)
+	createTransactionUseCase := create_transaction.NewCreateTransactionUseCase(uow, eventDispatcher, transactionCreatedEvent)
 
 	webserver := webserver.NewWebServer(":3000")
 
