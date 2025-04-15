@@ -1,0 +1,27 @@
+POST http://localhost:8080/clients HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Poliana",
+    "email": "john@j.com"
+}
+
+###
+
+POST http://localhost:8080/accounts HTTP/1.1
+Content-Type: application/json
+
+{
+    "client_id": "ff8b0e03-491c-41de-9a51-278c93e3488b"
+}
+
+###
+
+POST http://localhost:8080/transactions HTTP/1.1
+Content-Type: application/json
+
+{
+    "account_id_from": "92a0ab5a-a146-4e85-898c-bb2f99188467",
+    "account_id_to": "77220b36-a310-4b2b-961b-6cd11f6fc000",
+    "amount": 10
+}
