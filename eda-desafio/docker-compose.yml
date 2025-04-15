@@ -1,20 +1,14 @@
 services:
   goapp: 
     build: 
-      context: ./eda
+      context: ./wallet
     platform: linux/amd64
     ports:
       - 8080:8080
     depends_on:
       - mysql
-      - kafka
-    volumes:
-      - ./eda/migrations:/app/migrations:ro
     command: >
-      sh -c "
-      /app/wait-for.sh mysql 3306 &&
-      /usr/local/bin/migrate -path /app/migrations -database mysql://root:root@tcp(mysql:3306)/wallet up &&
-      ./walletcore"
+      sh -c "/app/wait-for.sh mysql 3306 ./walletcore"
 
   mysql:
     image: mysql:5.7
@@ -27,7 +21,6 @@ services:
       - 3306:3306
     volumes:
       - .docker/mysql:/var/lib/mysql
-      - ./eda/migrations:/app/migrations:ro
 
   zookeeper:
     image: "confluentinc/cp-zookeeper:6.1.0"
