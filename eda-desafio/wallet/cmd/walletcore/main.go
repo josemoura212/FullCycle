@@ -57,6 +57,26 @@ func runMigrations(db *sql.DB) {
 	fmt.Println("Migrations executed")
 }
 
+func createKafkaTopics() {
+	adminClient, err := ckafka.NewAdminClient(&ckafka.ConfigMap{"bootstrap.servers": "kafka:29092"})
+	if err != nil {
+		panic(fmt.Sprintf("Failed to create Kafka admin client: %s", err))
+	}
+	defer adminClient.Close()
+
+	topics := []ckafka.TopicSpecification{
+		{Topic: "transactions", NumPartitions: 1, ReplicationFactor: 1},
+		{Topic: "balances", NumPartitions: 1, ReplicationFactor: 1},
+	}
+
+	_, err = adminClient.CreateTopics(context.Background(), topics)
+	if err != nil {
+		panic(fmt.Sprintf("Failed to create Kafka topics: %s", err))
+	}
+
+	fmt.Println("Kafka topics created: transactions, balances")
+}
+
 func main() {
 	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", "root", "root", "mysql", "3306", "wallet"))
 
@@ -67,6 +87,8 @@ func main() {
 	defer db.Close()
 
 	runMigrations(db)
+
+	createKafkaTopics()
 
 	configMap := ckafka.ConfigMap{
 		"bootstrap.servers": "kafka:29092",

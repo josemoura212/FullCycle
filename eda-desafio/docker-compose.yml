@@ -38,6 +38,9 @@ services:
     depends_on:
       - zookeeper
     ports:
+    # Exposes 9092 for external connections to the broker
+    # Use kafka:29092 for connections internal on the docker network
+    # See https://rmoff.net/2018/08/02/kafka-listeners-explained/ for details
       - '9092:9092'
     environment:
       TZ: Sao_Paulo/Brazil
@@ -68,4 +71,26 @@ services:
       CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
       PORT: 9021
+
+  balances-db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: balances
+    ports:
+      - "5432:5432"
+    volumes:
+      - .docker/postgres:/var/lib/postgresql/data
+
+  # balances:
+  #   build:
+  #     context: ./balances
+  #   depends_on:
+  #     - kafka
+  #     - balances-db
+  #   environment:
+  #     DATABASE_URL: postgres://postgres:postgres@balances-db:5432/balances
+  #   ports:
+  #     - "3003:3003"
 

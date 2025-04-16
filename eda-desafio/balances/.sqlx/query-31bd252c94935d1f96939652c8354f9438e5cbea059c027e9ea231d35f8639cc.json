@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO balances (account_id, balance) VALUES ($1, $2)\n                                 ON CONFLICT (account_id) DO UPDATE SET balance = $2",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Varchar",
+        "Float8"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "31bd252c94935d1f96939652c8354f9438e5cbea059c027e9ea231d35f8639cc"
+}

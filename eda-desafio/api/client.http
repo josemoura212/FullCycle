@@ -21,7 +21,12 @@ POST http://localhost:8080/transactions HTTP/1.1
 Content-Type: application/json
 
 {
-    "account_id_from": "1",
-    "account_id_to": "2",
-    "amount": 100
+    "account_id_from": "2",
+    "account_id_to": "1",
+    "amount": 500
 }
+
+###
+
+GET http://localhost:3003/balances/2 HTTP/1.1
+Content-Type: application/json
