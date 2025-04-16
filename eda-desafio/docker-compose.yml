@@ -9,6 +9,8 @@ services:
       - mysql
     command: >
       sh -c "/app/wait-for.sh mysql 3306 ./walletcore"
+    networks:
+      - fullcycle-network
 
   mysql:
     image: mysql:5.7
@@ -21,6 +23,8 @@ services:
       - 3306:3306
     volumes:
       - .docker/mysql:/var/lib/mysql
+    networks:
+      - fullcycle-network
 
   zookeeper:
     image: "confluentinc/cp-zookeeper:6.1.0"
@@ -31,6 +35,8 @@ services:
       TZ: Sao_Paulo/Brazil
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - fullcycle-network
 
   kafka:
     image: "confluentinc/cp-enterprise-kafka:6.1.0"
@@ -38,9 +44,6 @@ services:
     depends_on:
       - zookeeper
     ports:
-    # Exposes 9092 for external connections to the broker
-    # Use kafka:29092 for connections internal on the docker network
-    # See https://rmoff.net/2018/08/02/kafka-listeners-explained/ for details
       - '9092:9092'
     environment:
       TZ: Sao_Paulo/Brazil
@@ -55,6 +58,8 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 100
       CONFLUENT_METRICS_ENABLE: 'false'
+    networks:
+      - fullcycle-network
 
   control-center:
     image: confluentinc/cp-enterprise-control-center:7.3.0
@@ -71,6 +76,8 @@ services:
       CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
       PORT: 9021
+    networks:
+      - fullcycle-network
 
   balances-db:
     image: postgres:15
@@ -82,15 +89,32 @@ services:
       - "5432:5432"
     volumes:
       - .docker/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fullcycle-network
 
-  # balances:
-  #   build:
-  #     context: ./balances
-  #   depends_on:
-  #     - kafka
-  #     - balances-db
-  #   environment:
-  #     DATABASE_URL: postgres://postgres:postgres@balances-db:5432/balances
-  #   ports:
-  #     - "3003:3003"
+  balances:
+    build:
+      context: ./balances
+    depends_on:
+      balances-db:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@balances-db:5432/balances
+    ports:
+      - "3003:3003"
+    networks:
+      - fullcycle-network
+    command: > 
+      sh -c "./balances"
+
+networks:
+  fullcycle-network:
+    driver: bridge
 

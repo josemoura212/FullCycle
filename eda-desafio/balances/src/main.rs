@@ -45,7 +45,7 @@ async fn get_balance(pool: web::Data<PgPool>, account_id: web::Path<String>) -> 
 
 async fn consume_kafka(pool: PgPool) {
     let consumer: StreamConsumer = rdkafka::config::ClientConfig::new()
-        .set("bootstrap.servers", "kafka:9092")
+        .set("bootstrap.servers", "kafka:29092")
         .set("client.id", "balances")
         .set("group.id", "balances")
         .set("auto.offset.reset", "earliest")
@@ -123,7 +123,7 @@ async fn consume_kafka(pool: PgPool) {
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
-    let pool = PgPool::connect("postgres://postgres:postgres@localhost:5432/balances")
+    let pool = PgPool::connect("postgres://postgres:postgres@balances-db:5432/balances")
         .await
         .expect("Failed to connect to database");
 

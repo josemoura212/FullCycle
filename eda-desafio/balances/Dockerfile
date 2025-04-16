@@ -1,35 +1,25 @@
-# Use a imagem oficial do Rust como base
-FROM rust:latest AS builder
+FROM rust:latest AS base
 
-# Configure o diretório de trabalho
 WORKDIR /app
 
-# Copie os arquivos do projeto para o container
+RUN apt update && apt install -y lld clang libpq-dev openssl ca-certificates \
+    && cargo install sqlx-cli --no-default-features --features postgres \
+    && apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY . .
 
-# Instale o sqlx-cli no estágio de build
-RUN cargo install sqlx-cli --no-default-features --features postgres
-
-# Copie as migrações para o container
 COPY ./migrations ./migrations
 
-# Compile o projeto em modo release
-RUN cargo build --release
+ENV SQLX_OFFLINE=true
 
-# Use uma imagem mínima para o runtime
-FROM debian:stable-slim
+RUN cargo build --release --bin balances
 
-# Instale as dependências necessárias
-RUN apt-get update && apt-get install -y libpq-dev && rm -rf /var/lib/apt/lists/*
+RUN cp ./target/release/balances /app/balances
 
-# Configure o diretório de trabalho
-WORKDIR /app
-
-# Copie o binário compilado do estágio anterior
-COPY --from=builder /app/target/release/balances /app/balances
-
-# Exponha a porta do serviço
 EXPOSE 3003
 
-# Execute as migrações antes de iniciar o serviço
-CMD ["sh", "-c", "./balances && sqlx migrate run --database-url postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@$POSTGRES_HOST:$POSTGRES_PORT/$POSTGRES_DB"]
+
+# CMD ["sh", "-c", "sqlx migrate run --database-url $DATABASE_URL && ./balances"]
+CMD ["tail", "-f", "/dev/null"]
