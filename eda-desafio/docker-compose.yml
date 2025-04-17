@@ -107,6 +107,7 @@ services:
         condition: service_started
     environment:
       DATABASE_URL: postgres://postgres:postgres@balances-db:5432/balances
+      APP_ENVIRONMENT: development
     ports:
       - "3003:3003"
     networks:
