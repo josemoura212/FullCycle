@@ -112,7 +112,7 @@ services:
     networks:
       - fullcycle-network
     command: > 
-      sh -c "./balances"
+      sh -c "sqlx migrate run && ./balances"
 
 networks:
   fullcycle-network:
