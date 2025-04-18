@@ -1,4 +1,4 @@
-#[derive(serde::Deserialize, serde::Serialize, Clone)]
+#[derive(serde::Deserialize, serde::Serialize, Clone, Debug)]
 pub struct Account {
     pub id: String,
     pub balance: f64,

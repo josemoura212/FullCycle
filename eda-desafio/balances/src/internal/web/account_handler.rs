@@ -8,13 +8,10 @@ pub async fn get_balance(
 ) -> impl Responder {
     let account_id = account_id.into_inner();
 
-    let result = account_db.get_balance(&account_id).await;
+    let result = account_db.find_by_id(&account_id).await;
 
     match result {
         Ok(account) => web::Json(account),
-        Err(_) => web::Json(Account {
-            id: "Account not found".to_string(),
-            balance: 0.0,
-        }),
+        Err(_) => actix_web::HttpResponse::NotFound().body("Account not found"),
     }
 }
