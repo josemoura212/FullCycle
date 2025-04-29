@@ -1,10 +1,33 @@
 ﻿
+using Catalog.Domain.Exceptions;
+
 namespace Catalog.Domain.Entity;
-public class Category(string name, string description)
+public class Category
 {
-    public Guid Id { get; private set; } = Guid.NewGuid();
-    public string Name { get; private set; } = name;
-    public string Description { get; private set; } = description;
-    public DateTime CreatedAt { get; private set; } = DateTime.Now;
-    public bool IsActive { get; private set; } = true;
+   
+
+    public Guid Id { get; private set; }
+    public string Name { get; private set; }
+    public string Description { get; private set; } 
+    public DateTime CreatedAt { get; private set; }
+    public bool IsActive { get; private set; }
+
+
+    public Category(string name, string description, bool isActive = true)
+    {
+        Id = Guid.NewGuid();
+        Name = name;
+        Description = description;
+        CreatedAt = DateTime.Now;
+        IsActive = isActive;
+        Validate();
+    }
+
+
+    public void Validate()
+    {
+        if(String.IsNullOrWhiteSpace(Name))
+            throw new EntityValidationException($"{nameof(Name)} should not be empty or null");
+    }
 }
+
