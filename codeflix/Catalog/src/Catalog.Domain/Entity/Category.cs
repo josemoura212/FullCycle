@@ -1,5 +1,6 @@
 ﻿
 using Catalog.Domain.Exceptions;
+using static System.String;
 
 namespace Catalog.Domain.Entity;
 public class Category
@@ -26,8 +27,12 @@ public class Category
 
     public void Validate()
     {
-        if(String.IsNullOrWhiteSpace(Name))
+        if(IsNullOrWhiteSpace(Name))
             throw new EntityValidationException($"{nameof(Name)} should not be empty or null");
+        if(Description == null)
+            throw new EntityValidationException($"{nameof(Description)} should not be null");
+        if(Name.Length < 3)
+            throw new EntityValidationException($"{nameof(Name)} should be at least 3 characters long");
     }
 }
 

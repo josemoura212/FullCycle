@@ -70,8 +70,29 @@ namespace Catalog.UnitTests.Domain.Entity.Category
             Assert.Equal("Name should not be empty or null", exception.Message);
         }
 
+        [Fact(DisplayName = nameof(InstantiateErrorWhenDescriptionIsNull))]
+        [Trait("Domain", "Category - Aggregates")]
+        public void InstantiateErrorWhenDescriptionIsNull()
+        {
+            Action action = () => new DomainEntity.Category("Category name", null!, true);
+            var exception = Assert.Throws<EntityValidationException>(action);
+            Assert.Equal("Description should not be null", exception.Message);
+        }
+
 
         // nome deve ter nominimo 3 caracteres
+        [Theory(DisplayName = nameof(InstantiateErrorWhenNameLessThan3Characters))]
+        [Trait("Domain", "Category - Aggregates")]
+        [InlineData("ab")]
+        [InlineData("a")]
+        [InlineData("cc")]
+        [InlineData("aa")]
+        public void InstantiateErrorWhenNameLessThan3Characters(string invalidName)
+        {
+            Action action = () => new DomainEntity.Category(invalidName, "description", true);
+            var exception = Assert.Throws<EntityValidationException>(action);
+            Assert.Equal("Name should be at least 3 characters long", exception.Message);
+        }
         // nome deve ter no maximo 255 caracteres
         // descricao deve ter no maximo 10_000 caracteres
     }

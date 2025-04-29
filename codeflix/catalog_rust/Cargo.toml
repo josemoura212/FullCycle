@@ -1,0 +1,23 @@
+[package]
+name = "catalog_rust"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+chrono = { version = "0.4.41", features = ["serde"] }
+rstest = "0.25.0"
+serde = { version = "1.0.219", features = ["derive"] }
+uuid = { version = "1.16.0", features = ["v4", "serde"] }
+validator = { version = "0.20.0", features = ["derive"] }
+
+
+[lib]
+name = "catalog_rust"
+path = "src/lib.rs"
+
+[[bin]]
+name = "catalog_rust_bin"
+path = "src/main.rs"
+
+[dev-dependencies]
+rstest = "0.25.0"
