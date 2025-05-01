@@ -122,7 +122,7 @@ namespace Catalog.UnitTests.Domain.Entity.Category
         public void Activate()
         {
 
-            var category = new DomainEntity.Category("Name", "Drescription");
+            var category = new DomainEntity.Category("Name", "Description");
             category.Activate();
 
             Assert.True(category.IsActive);
@@ -133,7 +133,7 @@ namespace Catalog.UnitTests.Domain.Entity.Category
         public void Deactivate()
         {
 
-            var category = new DomainEntity.Category("Name", "Drescription");
+            var category = new DomainEntity.Category("Name", "Description");
             category.Deactivate();
 
             Assert.False(category.IsActive);
@@ -143,7 +143,7 @@ namespace Catalog.UnitTests.Domain.Entity.Category
         [Trait("Domain", "Category - Aggregates")]
         public void Update()
         {
-            var category = new DomainEntity.Category("Name", "Drescription");
+            var category = new DomainEntity.Category("Name", "Description");
             var newValues = new
             {
                 Name = "category name",

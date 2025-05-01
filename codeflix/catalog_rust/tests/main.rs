@@ -1,1 +1,1 @@
-mod catalog;
+mod category;
