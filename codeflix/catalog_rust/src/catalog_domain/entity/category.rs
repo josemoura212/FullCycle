@@ -4,7 +4,7 @@ use uuid::Uuid;
 use crate::catalog_domain::EntityValidationException;
 
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub struct Catalog {
+pub struct Category {
     pub id: Uuid,
     pub name: String,
     pub description: String,
@@ -12,7 +12,7 @@ pub struct Catalog {
     pub created_at: DateTime<Utc>,
 }
 
-impl Catalog {
+impl Category {
     pub fn new(
         name: String,
         description: String,

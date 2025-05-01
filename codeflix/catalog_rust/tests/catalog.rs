@@ -8,11 +8,11 @@ fn test_catalog_creation(
     #[case] description: &str,
     #[case] is_active: Option<bool>,
 ) {
-    use catalog_rust::catalog_domain::Catalog;
+    use catalog_rust::catalog_domain::Category;
     use chrono::Utc;
     let datetime_before = Utc::now();
 
-    let catalog = Catalog::new(name.to_string(), description.to_string(), is_active).unwrap();
+    let catalog = Category::new(name.to_string(), description.to_string(), is_active).unwrap();
     let datetime_after = Utc::now();
     assert!(catalog.id.is_nil() == false);
     assert!(catalog.created_at >= datetime_before);
@@ -24,9 +24,9 @@ fn test_catalog_creation(
 
 #[test]
 fn test_catalog_validation() {
-    use catalog_rust::catalog_domain::Catalog;
+    use catalog_rust::catalog_domain::Category;
 
-    let result = Catalog::new("".to_string(), "Valid description".to_string(), None);
+    let result = Category::new("".to_string(), "Valid description".to_string(), None);
 
     assert!(result.is_err());
     assert_eq!(
@@ -34,14 +34,14 @@ fn test_catalog_validation() {
         Some("Name cannot be empty or whitespace".to_string())
     );
 
-    let result = Catalog::new(
+    let result = Category::new(
         "Valid name".to_string(),
         "Valid description".to_string(),
         Some(false),
     );
     assert!(result.is_ok());
 
-    let result = Catalog::new(
+    let result = Category::new(
         "Te".to_string(),
         "Another valid description".to_string(),
         None,
