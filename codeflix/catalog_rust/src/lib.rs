@@ -1,1 +1,1 @@
-pub mod category_domain;
+pub mod catalog_domain;

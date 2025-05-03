@@ -1,7 +1,7 @@
 use chrono::{DateTime, Utc};
 use uuid::Uuid;
 
-use crate::category_domain::EntityValidationException;
+use crate::catalog_domain::EntityValidationException;
 
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct Category {

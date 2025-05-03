@@ -20,4 +20,5 @@ name = "catalog_rust_bin"
 path = "src/main.rs"
 
 [dev-dependencies]
+fake = { version = "4.3.0", features = ["derive"] }
 rstest = "0.25.0"
