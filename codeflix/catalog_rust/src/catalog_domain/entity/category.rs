@@ -54,29 +54,12 @@ impl Category {
 }
 
 fn validate(category: &Category) -> Result<(), EntityValidationException> {
-    if category.name.trim().is_empty() {
-        return Err(EntityValidationException::new(Some(
-            "Name cannot be empty or whitespace".to_string(),
-        )));
-    }
+    use crate::catalog_domain::validation::domain_validation::DomainValidation;
 
-    if category.name.len() < 3 {
-        return Err(EntityValidationException::new(Some(
-            "Name must be at least 3 characters long".to_string(),
-        )));
-    }
-
-    if category.name.len() > 255 {
-        return Err(EntityValidationException::new(Some(
-            "Name should be less or equal 255  characters long".to_string(),
-        )));
-    }
-
-    if category.description.len() > 10_000 {
-        return Err(EntityValidationException::new(Some(
-            "Description should be less or equal 10.000 characters long".to_string(),
-        )));
-    }
+    DomainValidation::not_empty_or_whitespace(&category.name, "Name")?;
+    DomainValidation::min_length(&category.name, "Name", 3)?;
+    DomainValidation::max_length(&category.name, "Name", 255)?;
+    DomainValidation::max_length(&category.description, "Description", 10000)?;
 
     Ok(())
 }

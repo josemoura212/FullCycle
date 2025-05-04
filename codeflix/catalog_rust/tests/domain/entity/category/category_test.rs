@@ -42,7 +42,7 @@ mod tests {
         assert!(result.is_err());
         assert_eq!(
             result.err().unwrap().message,
-            Some("Name cannot be empty or whitespace".to_string())
+            Some("Name should not be empty or whitespace".to_string())
         );
     }
 
@@ -57,7 +57,7 @@ mod tests {
         assert!(result.is_err());
         assert_eq!(
             result.err().unwrap().message,
-            Some("Name must be at least 3 characters long".to_string())
+            Some("Name should be at least 3 characters long".to_string())
         );
     }
 
@@ -70,7 +70,7 @@ mod tests {
         assert!(result.is_err());
         assert_eq!(
             result.err().unwrap().message,
-            Some("Name should be less or equal 255  characters long".to_string())
+            Some("Name should be less or equal 255 characters long".to_string())
         );
     }
 
@@ -83,7 +83,7 @@ mod tests {
         assert!(result.is_err());
         assert_eq!(
             result.err().unwrap().message,
-            Some("Description should be less or equal 10.000 characters long".to_string())
+            Some("Description should be less or equal 10000 characters long".to_string())
         );
     }
 
@@ -113,12 +113,51 @@ mod tests {
     #[test]
     fn update_only_description() {
         let valid_category = category_fixture();
-        let mut catalog =
-            Category::new(valid_category.name, valid_category.description, None).unwrap();
-        let result = catalog.update("New name".to_string(), Some("New description".to_string()));
+        let mut catalog = Category::new(
+            valid_category.name.clone(),
+            valid_category.description,
+            None,
+        )
+        .unwrap();
+        let result = catalog.update(
+            valid_category.name.clone(),
+            Some("New description".to_string()),
+        );
 
         assert!(result.is_ok());
+        assert_eq!(catalog.name, valid_category.name);
         assert_eq!(catalog.description, "New description");
+    }
+
+    #[test]
+    fn update_preserves_description_when_none() {
+        let valid_category = category_fixture();
+        let mut catalog = Category::new(
+            valid_category.name.clone(),
+            valid_category.description.clone(),
+            None,
+        )
+        .unwrap();
+
+        let result = catalog.update("Updated name".to_string(), None);
+
+        assert!(result.is_ok());
+        assert_eq!(catalog.name, "Updated name");
+        assert_eq!(catalog.description, valid_category.description);
+    }
+
+    #[test]
+    fn exception_fallback_message_none() {
+        use catalog_rust::catalog_domain::EntityValidationException;
+        use std::fmt::Write;
+
+        let err = EntityValidationException::new(None);
+        let mut output = String::new();
+        let _ = write!(&mut output, "{}", err);
+        assert_eq!(output, "Entity validation error");
+
+        let debug_output = format!("{:?}", err);
+        assert_eq!(debug_output, "EntityValidationException: None");
     }
 
     #[rstest]
@@ -133,7 +172,7 @@ mod tests {
         assert!(result.is_err());
         assert_eq!(
             result.err().unwrap().message,
-            Some("Name cannot be empty or whitespace".to_string())
+            Some("Name should not be empty or whitespace".to_string())
         );
     }
 
@@ -151,7 +190,7 @@ mod tests {
         assert!(result.is_err());
         assert_eq!(
             result.err().unwrap().message,
-            Some("Name must be at least 3 characters long".to_string())
+            Some("Name should be at least 3 characters long".to_string())
         );
     }
 
@@ -188,7 +227,7 @@ mod tests {
         assert!(result.is_err());
         assert_eq!(
             result.err().unwrap().message,
-            Some("Name should be less or equal 255  characters long".to_string())
+            Some("Name should be less or equal 255 characters long".to_string())
         );
     }
 
@@ -203,7 +242,7 @@ mod tests {
         assert!(result.is_err());
         assert_eq!(
             result.err().unwrap().message,
-            Some("Description should be less or equal 10.000 characters long".to_string())
+            Some("Description should be less or equal 10000 characters long".to_string())
         );
     }
 }
