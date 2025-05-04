@@ -105,7 +105,7 @@ public class CategoryTest(CategoryTestFixture categoryTestFixture)
         var longString = categoryTestFixture.Faker.Lorem.Letter(256);
         Action action = () => new DomainEntity.Category(longString, validCategory.Description);
         action.Should().Throw<EntityValidationException>()
-            .WithMessage("Name should be less or equal 255  characters long");
+            .WithMessage("Name should be less or equal 255 characters long");
     }
 
     // descrição deve ter no máximo 10_000 caracteres
@@ -121,7 +121,7 @@ public class CategoryTest(CategoryTestFixture categoryTestFixture)
 
         Action action = () => new DomainEntity.Category(validCategory.Name, longString);
         action.Should().Throw<EntityValidationException>()
-            .WithMessage("Description should be less or equal 10.000 characters long");
+            .WithMessage("Description should be less or equal 10000 characters long");
     }
 
     [Fact(DisplayName = nameof(Activate))]
@@ -212,7 +212,7 @@ public class CategoryTest(CategoryTestFixture categoryTestFixture)
 
         Action action = () => category.Update(longString, "description");
         action.Should().Throw<EntityValidationException>()
-            .WithMessage("Name should be less or equal 255  characters long");
+            .WithMessage("Name should be less or equal 255 characters long");
     }
 
     [Fact(DisplayName = nameof(UpdateErrorWhenDescriptionIsGreaterThan10_000Characters))]
@@ -228,6 +228,6 @@ public class CategoryTest(CategoryTestFixture categoryTestFixture)
 
         Action action = () => category.Update(category.Name, longString);
         action.Should().Throw<EntityValidationException>()
-            .WithMessage("Description should be less or equal 10.000 characters long");
+            .WithMessage("Description should be less or equal 10000 characters long");
     }
 }

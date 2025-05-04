@@ -38,7 +38,7 @@ public class DomainValidationTest
     {
         var fieldName = Faker.Commerce.ProductAdjective().Replace(" ", "");
         Action action = () => DomainValidation.NotNullOrEmpty(target, fieldName);
-        action.Should().Throw<EntityValidationException>().WithMessage($"{fieldName} should not be null or empty");
+        action.Should().Throw<EntityValidationException>().WithMessage($"{fieldName} should not be empty or null");
     }
 
     [Fact(DisplayName = nameof(NotNullOrEmptyOk))]
@@ -58,7 +58,7 @@ public class DomainValidationTest
     {
         var fieldName = Faker.Commerce.ProductAdjective().Replace(" ", "");
         Action action = () => DomainValidation.MinLength(target, minLength, fieldName);
-        action.Should().Throw<EntityValidationException>().WithMessage($"{fieldName} should not be less than {minLength} characters long");
+        action.Should().Throw<EntityValidationException>().WithMessage($"{fieldName} should be at least {minLength} characters long");
     }
 
 
@@ -103,7 +103,7 @@ public class DomainValidationTest
     {
         var fieldName = Faker.Commerce.ProductAdjective().Replace(" ", "");
         Action action = () => DomainValidation.MaxLength(target, maxLength, fieldName);
-        action.Should().Throw<EntityValidationException>().WithMessage($"{fieldName} should not be greater than {maxLength} characters long");
+        action.Should().Throw<EntityValidationException>().WithMessage($"{fieldName} should be less or equal {maxLength} characters long");
     }
 
     public static IEnumerable<object[]> GetValuesGreaterThanMax(int numberOfTests)
