@@ -1,7 +1,7 @@
 use chrono::{DateTime, Utc};
 use uuid::Uuid;
 
-use crate::catalog_domain::EntityValidationException;
+use crate::catalog_domain::EntityValidationError;
 
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct Category {
@@ -17,7 +17,7 @@ impl Category {
         name: String,
         description: String,
         is_active: Option<bool>,
-    ) -> Result<Self, EntityValidationException> {
+    ) -> Result<Self, EntityValidationError> {
         let category = Self {
             id: Uuid::new_v4(),
             name,
@@ -34,7 +34,7 @@ impl Category {
         &mut self,
         name: String,
         description: Option<String>,
-    ) -> Result<(), EntityValidationException> {
+    ) -> Result<(), EntityValidationError> {
         self.name = name;
         if let Some(desc) = description {
             self.description = desc;
@@ -42,18 +42,18 @@ impl Category {
         validate(self)
     }
 
-    pub fn activate(&mut self) -> Result<(), EntityValidationException> {
+    pub fn activate(&mut self) -> Result<(), EntityValidationError> {
         self.is_active = true;
         validate(self)
     }
 
-    pub fn deactivate(&mut self) -> Result<(), EntityValidationException> {
+    pub fn deactivate(&mut self) -> Result<(), EntityValidationError> {
         self.is_active = false;
         validate(self)
     }
 }
 
-fn validate(category: &Category) -> Result<(), EntityValidationException> {
+fn validate(category: &Category) -> Result<(), EntityValidationError> {
     use crate::catalog_domain::validation::domain_validation::DomainValidation;
 
     DomainValidation::not_empty_or_whitespace(&category.name, "Name")?;

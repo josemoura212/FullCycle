@@ -68,7 +68,9 @@ fn not_empty_or_whitespace_ok() {
 #[case("")]
 #[case("   ")]
 fn not_empty_or_whitespace_throw_when_empty(#[case] target: &str) {
-    let field_name: String = Profession().fake::<String>().replace(" ", "");
+    let field_name: String = fake::faker::company::pt_br::Profession()
+        .fake::<String>()
+        .replace(" ", "");
     let result = DomainValidation::not_empty_or_whitespace(target, &field_name);
     assert!(result.is_err());
     assert_eq!(
@@ -81,7 +83,9 @@ fn not_empty_or_whitespace_throw_when_empty(#[case] target: &str) {
 #[case(get_values_smaller_than_min(10))]
 fn min_length_throw_when_less_than_3(#[case] inputs: Vec<(String, usize)>) {
     for (target, min_length) in inputs {
-        let field_name: String = Profession().fake::<String>().replace(" ", "");
+        let field_name: String = fake::faker::company::pt_br::Profession()
+            .fake::<String>()
+            .replace(" ", "");
         let result = DomainValidation::min_length(&target, &field_name, min_length);
         assert!(result.is_err());
         assert_eq!(
@@ -108,7 +112,9 @@ fn min_length_ok(#[case] inputs: Vec<(String, usize)>) {
 #[case(get_values_greater_than_max(10))]
 fn max_length_throw_when_greater_than_max(#[case] inputs: Vec<(String, usize)>) {
     for (target, max_length) in inputs {
-        let field_name: String = Profession().fake::<String>().replace(" ", "");
+        let field_name: String = fake::faker::company::pt_br::Profession()
+            .fake::<String>()
+            .replace(" ", "");
         let result = DomainValidation::max_length(&target, &field_name, max_length);
         assert!(result.is_err());
         assert_eq!(

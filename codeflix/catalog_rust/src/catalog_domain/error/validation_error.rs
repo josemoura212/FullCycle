@@ -1,16 +1,16 @@
 use std::fmt;
 
-pub struct EntityValidationException {
+pub struct EntityValidationError {
     pub message: Option<String>,
 }
 
-impl EntityValidationException {
+impl EntityValidationError {
     pub fn new(message: Option<String>) -> Self {
         Self { message }
     }
 }
 
-impl fmt::Display for EntityValidationException {
+impl fmt::Display for EntityValidationError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match &self.message {
             Some(msg) => write!(f, "{}", msg),
@@ -19,10 +19,10 @@ impl fmt::Display for EntityValidationException {
     }
 }
 
-impl fmt::Debug for EntityValidationException {
+impl fmt::Debug for EntityValidationError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "EntityValidationException: {:?}", self.message)
+        write!(f, "EntityValidationError: {:?}", self.message)
     }
 }
 
-impl std::error::Error for EntityValidationException {}
+impl std::error::Error for EntityValidationError {}

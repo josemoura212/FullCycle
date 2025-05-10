@@ -1,8 +1,8 @@
 mod entity {
     pub mod category;
 }
-mod exceptions {
-    pub mod entity_validation;
+mod error {
+    pub mod validation_error;
 }
 
 mod validation {
@@ -10,5 +10,5 @@ mod validation {
 }
 
 pub use entity::category::Category;
-pub use exceptions::entity_validation::*;
+pub use error::validation_error::*;
 pub use validation::domain_validation::DomainValidation;

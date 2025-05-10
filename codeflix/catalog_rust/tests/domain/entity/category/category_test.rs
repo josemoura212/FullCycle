@@ -148,16 +148,16 @@ mod tests {
 
     #[test]
     fn exception_fallback_message_none() {
-        use catalog_rust::catalog_domain::EntityValidationException;
+        use catalog_rust::catalog_domain::EntityValidationError;
         use std::fmt::Write;
 
-        let err = EntityValidationException::new(None);
+        let err = EntityValidationError::new(None);
         let mut output = String::new();
         let _ = write!(&mut output, "{}", err);
         assert_eq!(output, "Entity validation error");
 
         let debug_output = format!("{:?}", err);
-        assert_eq!(debug_output, "EntityValidationException: None");
+        assert_eq!(debug_output, "EntityValidationError: None");
     }
 
     #[rstest]
